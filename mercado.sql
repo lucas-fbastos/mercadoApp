@@ -1,27 +1,9 @@
--- phpMyAdmin SQL Dump
--- version 4.8.4
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: 20-Dez-2019 às 17:58
--- Versão do servidor: 10.1.37-MariaDB
--- versão do PHP: 5.6.40
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
+﻿
 --
 -- Database: `mercado`
 --
-
+ CREATE DATABASE mercado;
+ USE mercado;
 -- --------------------------------------------------------
 
 --
@@ -38,7 +20,12 @@ CREATE TABLE `fabricante` (
 --
 
 INSERT INTO `fabricante` (`ID_FABRICANTE`, `NOME`) VALUES
-(1, 'Mabel');
+(1, 'ACME'),
+(2, 'Coca Cola'),
+(3, 'Nestle'),
+(4, 'Unilever');
+
+
 
 -- --------------------------------------------------------
 
@@ -50,7 +37,7 @@ CREATE TABLE `produto` (
   `ID_PRODUTO` int(11) NOT NULL,
   `NOME` varchar(40) NOT NULL,
   `ID_FABRICANTE` int(11) NOT NULL,
-  `VOLUME` int(11) NOT NULL,
+  `VOLUME` decimal(11.2) NOT NULL,
   `UNIDADE` varchar(40) NOT NULL,
   `ESTOQUE` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
@@ -60,7 +47,7 @@ CREATE TABLE `produto` (
 --
 
 INSERT INTO `produto` (`ID_PRODUTO`, `NOME`, `ID_FABRICANTE`, `VOLUME`, `UNIDADE`, `ESTOQUE`) VALUES
-(1, 'Biscoito', 1, 10, '10', 20);
+(1, 'Biscoito', 1, 100, '10 und.', 20);
 
 --
 -- Indexes for dumped tables
