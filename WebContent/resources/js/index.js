@@ -27,8 +27,8 @@ var inicio = new Vue({
 			});
 		},
 		atualizaProdutoModal: function(produto){
-			menu.createProdutoForm(produto);
-			menu.openModal();
+			menu.createProdutoForm(produto, false);
+			//menu.openModal();
 		},
 		openModalDelete: function(produto){
 
@@ -60,7 +60,7 @@ var errorModal = new Vue({
 var modalDelete = new Vue({
 	el:"#modalDelete",
     data: {
-    	cdprod:'',
+    	cdProd:'',
     	nmProduto: '',
     },
     created: function(){
@@ -70,17 +70,25 @@ var modalDelete = new Vue({
     		$("#modalDelete").modal('show');
     	},
 		setInfo: function(produto){
-			this.cdProd    = produto.cdProduto;
+			this.cdProd    = produto.id;
 			this.nmProduto = produto.nome;
-		}
+		},
+    	deletar: function(){
+    		axios.delete("/mercado/rs/produtos/"+this.cdProd)
+			.then(response => { window.location.reload(true);
+			}).catch(function (error){
+				errorModal.modalError("Erro interno", "Não foi possível deletar o produto");
+			}).finally(function(){
+				$('#modalDelete').modal('hide');
+			});
+    	}
     }
 });
 
 var nav = new Vue({
 	el:"#nav",
     data: {
-    	msg:'',
-        error:'' ,
+   
     },
     created: function(){
         let vm =  this;
@@ -89,6 +97,7 @@ var nav = new Vue({
     methods:{
 		openModal: function(error,msg){
 			document.getElementById("formulario").reset();
+			document.getElementById('hidden_id').value('0');
 			menu.openModal();
 		},
     }
@@ -98,13 +107,14 @@ var menu = new Vue({
 	el:"#modalProduto",
     data: {
     	produto: {
-    		cdProduto:    0,
+    		id:            0,
     		unidade:      '',
-	        nomeProduto:  '',
+	        nome:         '',
 	        cdFabricante:  0,
 	        volume:       '',
 	        estoque:       0
     	},
+    	isNovo: true,
     	errors: [],
         listaFabricantes: [],
     },
@@ -140,7 +150,7 @@ var menu = new Vue({
     		return false;
     	},
     	clearForm: function(){
-    		this.$refs.cdProduto.value    = 0;
+    		this.$refs.cdProduto.value    = null;
     		this.$refs.nomeProduto.value  = '';
     		this.$refs.cdFabricante.value = 0;
     		this.$refs.volume.value       = '';
@@ -150,19 +160,23 @@ var menu = new Vue({
     	openModal: function(){
     		$('#modalProduto').modal('show');
     	},
-    	createProdutoForm(produto){
-    		this.$refs.cdProduto.value    = produto.cdProduto;
+    	
+    	createProdutoForm: function(produto, isNovo){
+    		this.isNovo = isNovo;
+    		//alert(produto.id);
+    		this.$refs.cdProduto.value    = produto.id;
     		this.$refs.nomeProduto.value  = produto.nome
     		this.$refs.cdFabricante.value = produto.cdFabricante;
     		this.$refs.volume.value       = produto.volume;
     		this.$refs.estoque.value      = produto.estoque;
     		this.$refs.unidade.value      = produto.unidade;
+    		$('#modalProduto').modal('show');
     	},
 		cadastro: function(){
 			const modalProd = this;
 			if(modalProd.validaForm()){
-					
-				modalProd.produto.nomeProduto  = modalProd.$refs.nomeProduto.value;
+				modalProd.produto.id           = null;
+				modalProd.produto.nome         = modalProd.$refs.nomeProduto.value;
 				modalProd.produto.cdFabricante = modalProd.$refs.cdFabricante.value;
 				modalProd.produto.volume       = modalProd.$refs.volume.value;
 				modalProd.produto.estoque      = modalProd.$refs.estoque.value;
@@ -189,16 +203,16 @@ var menu = new Vue({
 			const vm = this;
 			if(vm.validaForm()){
 					
-				this.produto.nomeProduto  = this.$refs.nomeProdutoAtt.value;
-				this.produto.cdFabricante = this.$refs.cdFabricanteAtt.value;
-				this.produto.volume       = this.$refs.volumeAtt.value;
-				this.produto.estoque      = this.$refs.estoqueAtt.value;
-				this.produto.unidade      = this.$refs.unidadeAtt.value;
-				
-				axios.put("/mercado/rs/produtos/"+produto.cdProduto,this.produto)
-				.then(response => {vm.listaProdutos = response.data;
+				this.produto.nome         = this.$refs.nomeProduto.value;
+				this.produto.cdFabricante = this.$refs.cdFabricante.value;
+				this.produto.volume       = this.$refs.volume.value;
+				this.produto.estoque      = this.$refs.estoque.value;
+				this.produto.unidade      = this.$refs.unidade.value;
+				this.produto.id           = this.$refs.cdProduto.value;
+				axios.put("/mercado/rs/produtos/"+this.produto.id,this.produto)
+				.then(response => {window.location.reload(true);
 				}).catch(function (error) {
-					errorModal.modalError("Erro interno", "Não foi possível atualizar os serviços");
+					errorModal.modalError("Erro interno", "Não foi possível atualizar o produto");
 				}).finally(function() {
 					$('#modalProduto').modal('hide');
 				});

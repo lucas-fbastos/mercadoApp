@@ -8,6 +8,8 @@
 			href="resources/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css"
 			href="resources/css/bootstrap-vue.css">
+		<link rel="stylesheet" type="text/css"
+			href="resources/css/app.css">
 	</head>
 
 	<body>
@@ -25,14 +27,12 @@
 		        			Cadastrar Produto
 		        		</button>	
 		        	</li>
-		      		<li class="nav-item active">
-		        		<a class="nav-link" >Cadastrar Fornecedores<span class="sr-only">Cadastrar Fornecedores</span></a>
-		      		</li>
+		      		
 		    	</ul>
 			</div>
 		</nav>
-		<div class="container-fluid">
-			<div id="inicio" class="container-fluid table mt-3 col-6 offset-3 " >
+		<div class="container-fluid ">
+			<div id="inicio" class="container-fluid table mt-5 col-5 p-4 shadow" >
 				<h4>Lista de Produtos</h4>
 				<table>
 			 		<tr>
@@ -80,7 +80,7 @@
         				<form id="formulario">
 							<div class="form-group">
 						    	<label>*Nome do Produto</label>
-						    	<input type='hidden' ref="cdProduto" class='hidden' ref="cdProduto">
+						    	<input type='hidden' ref="cdProduto" class='hidden' id='hidden_id' >
 						    	<input type="text" class="form-control" ref="nomeProduto"
 						    		 placeholder="ex: Biscoitinho" required>
 						    </div>
@@ -107,10 +107,10 @@
       				</div>
 				    <div class="modal-footer">
 				     	<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-				       <button type="button" v-if="produto.cdpProduto==0"  @click="atualizaProduto()"
-				        class="btn btn-primary">Atualizar</button>
-				       <button type="button" v-if="produto.cdpProduto!=0" 
-				        @click="cadastro()" class="btn btn-primary">Cadastar</button>
+				       <button type="button" v-if="isNovo"  @click="cadastro"
+				        class="btn btn-primary">Cadastrar</button>
+				       <button type="button" v-else 
+				        @click="atualizaProduto()" class="btn btn-primary">Atualizar</button>
 				   
 				    </div>
 				</div>
@@ -150,11 +150,12 @@
 	        				</h4>
 	        			</div>
 	        			<div class="row mt-3">
-	      					<div class="col-8 offset-4">
-		      					<button type="button" class="btn btn-danger col-2" aria-label="Sim">
+	      					<div class="col-8 offset-2">
+		      					<button type="button" class="btn btn-danger btn-lg btn-block" 
+		      						aria-label="Sim" @click="deletar(cdProd)">
 			          				Sim
 			        			</button>
-			        			<button type="button" class="btn btn-secondary col-2" 
+			        			<button type="button" class="btn btn-secondary btn-lg btn-block" 
 			        				data-dismiss="modal" aria-label="Não">
 			          				Não
 			        			</button>

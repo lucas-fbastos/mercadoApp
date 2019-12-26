@@ -100,7 +100,8 @@ public class Produto implements Serializable {
 	}
 
 	public Produto(ProdutoDTO dto) {
-		this.nome = dto.getNomeProduto();
+		this.id = dto.getId();
+		this.nome = dto.getNome();
 		this.unidade = dto.getUnidade();
 		this.volume = dto.getVolume();
 		this.estoque = dto.getEstoque();

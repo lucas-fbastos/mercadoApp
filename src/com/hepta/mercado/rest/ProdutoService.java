@@ -102,8 +102,14 @@ public class ProdutoService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@PUT
-	public Response produtoUpdate(@PathParam("id") Integer id, Produto produto) {
+	public Response produtoUpdate(@PathParam("id") Integer id, ProdutoDTO produtoDTO) {
+		Produto produto = new Produto(produtoDTO);
 		try {
+			Fabricante fabricante = fabricanteDao.find(produtoDTO.getCdFabricante());
+			if(fabricante == null) {
+				return Response.status(Status.NOT_FOUND).build();
+			}
+			produto.setFabricante(fabricante);
 			dao.update(produto);
 			GenericEntity<Produto> entity = new GenericEntity<Produto>(produto) {};
 			return Response.status(Status.OK).entity(entity).build();
@@ -117,13 +123,19 @@ public class ProdutoService {
 	 * Remove um produto do mercado
 	 * 
 	 * @param id: id do produto
-	 * @return response 200 (OK) - Conseguiu remover
+	 * @return response 204 (No Content) - Conseguiu remover
 	 */
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@DELETE
 	public Response produtoDelete(@PathParam("id") Integer id) {
-		return Response.status(Status.NOT_IMPLEMENTED).build();
+		try {
+			dao.delete(id);
+			return Response.status(Status.NO_CONTENT).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 }

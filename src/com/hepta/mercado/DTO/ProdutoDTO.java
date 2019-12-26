@@ -2,24 +2,24 @@ package com.hepta.mercado.DTO;
 
 public class ProdutoDTO {
 
-	private String  nomeProduto;
+	private String  nome;
 	private Integer cdFabricante;
 	private Double  volume;
 	private String  unidade;
 	private Integer estoque;
-	private Integer cdProduto;
+	private Integer id;
 
-	public Integer getCdProduto() {
-		return cdProduto;
+	public Integer getId() {
+		return id;
 	}
-	public void setCdProduto(Integer cdProduto) {
-		this.cdProduto = cdProduto;
+	public void setId(Integer cdProduto) {
+		this.id = cdProduto;
 	}
-	public String getNomeProduto() {
-		return nomeProduto;
+	public String getNome() {
+		return nome;
 	}
-	public void setNomeProduto(String nomeProduto) {
-		this.nomeProduto = nomeProduto;
+	public void setNome(String nomeProduto) {
+		this.nome = nomeProduto;
 	}
 	
 	public Integer getCdFabricante() {
@@ -49,7 +49,7 @@ public class ProdutoDTO {
 	public ProdutoDTO(String nomeProduto, Integer cdFabricante, Double volume, String unidade,
 			Integer estoque) {
 		super();
-		this.nomeProduto = nomeProduto;
+		this.nome = nomeProduto;
 		this.cdFabricante = cdFabricante;
 		this.volume = volume;
 		this.unidade = unidade;
