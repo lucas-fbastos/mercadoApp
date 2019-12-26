@@ -28,7 +28,6 @@ var inicio = new Vue({
 		},
 		atualizaProdutoModal: function(produto){
 			menu.createProdutoForm(produto, false);
-			//menu.openModal();
 		},
 		openModalDelete: function(produto){
 
@@ -163,7 +162,6 @@ var menu = new Vue({
     	
     	createProdutoForm: function(produto, isNovo){
     		this.isNovo = isNovo;
-    		//alert(produto.id);
     		this.$refs.cdProduto.value    = produto.id;
     		this.$refs.nomeProduto.value  = produto.nome
     		this.$refs.cdFabricante.value = produto.cdFabricante;
